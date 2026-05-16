@@ -6,15 +6,19 @@ public class PlayerDefender : MonoBehaviour
     [SerializeField] private Transform firePoint;
     
     private IWeapon currentWeapon;
+    private Camera mainCamera;
 
     private void Start()
     {
         currentWeapon = new BasicWeapon(poolManager);
+        mainCamera = Camera.main;
     }
 
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Space))
+        AimTowardsMouse();
+
+        if (Input.GetMouseButtonDown(0) || Input.GetKeyDown(KeyCode.Space))
         {
             currentWeapon.Fire(firePoint.position, firePoint.rotation);
         }
@@ -22,6 +26,25 @@ public class PlayerDefender : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.U))
         {
             UpgradeWeapon();
+        }
+    }
+
+    private void AimTowardsMouse()
+    {
+        if (mainCamera == null) return;
+
+        Ray ray = mainCamera.ScreenPointToRay(Input.mousePosition);
+        
+        Plane groundPlane = new Plane(Vector3.up, Vector3.zero);
+        float hitDistance;
+
+        if (groundPlane.Raycast(ray, out hitDistance))
+        {
+            Vector3 targetPoint = ray.GetPoint(hitDistance);
+            
+            targetPoint.y = transform.position.y;
+
+            transform.LookAt(targetPoint);
         }
     }
 

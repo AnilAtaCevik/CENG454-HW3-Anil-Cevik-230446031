@@ -19,6 +19,7 @@ public class Core : MonoBehaviour, IDamageable
         if (CurrentHealth <= 0) return;
 
         CurrentHealth -= amount;
+        
         OnHealthChanged?.Invoke(CurrentHealth / MaxHealth);
 
         if (CurrentHealth <= 0)
@@ -30,6 +31,5 @@ public class Core : MonoBehaviour, IDamageable
     public void Die()
     {
         OnCoreDestroyed?.Invoke();
-        Debug.Log("Core breached! Game Over.");
     }
 }
