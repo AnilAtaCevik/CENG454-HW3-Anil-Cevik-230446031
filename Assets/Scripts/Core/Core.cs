@@ -19,6 +19,8 @@ public class Core : MonoBehaviour, IDamageable
         if (CurrentHealth <= 0) return;
 
         CurrentHealth -= amount;
+        Debug.Log($"Core Damaged! Remaining HP: {CurrentHealth}");
+        
         OnHealthChanged?.Invoke(CurrentHealth / MaxHealth);
 
         if (CurrentHealth <= 0)

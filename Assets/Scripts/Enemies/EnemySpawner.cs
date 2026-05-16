@@ -32,7 +32,7 @@ public class EnemySpawner : MonoBehaviour
             Enemy enemyScript = enemyObj.GetComponent<Enemy>();
             if (enemyScript != null && targetCore != null)
             {
-                enemyScript.SetTarget(targetCore);
+                enemyScript.SetTarget(targetCore.transform, targetCore);
             }
 
             yield return new WaitForSeconds(spawnInterval);
