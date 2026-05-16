@@ -1,11 +1,14 @@
 using UnityEngine;
 
-public class Enemy : MonoBehaviour
+public class Enemy : MonoBehaviour, IDamageable 
 {
     [SerializeField] private ScriptableObject attackStrategyObject;
     [SerializeField] private float moveSpeed = 3f;
     [SerializeField] private float attackRange = 2f;
     [SerializeField] private float attackCooldown = 1.5f;
+
+    public float MaxHealth { get; private set; } = 30f;
+    public float CurrentHealth { get; private set; }
 
     private IAttackStrategy currentStrategy;
     private IDamageable currentTarget;
@@ -14,12 +17,8 @@ public class Enemy : MonoBehaviour
 
     private void Awake()
     {
+        CurrentHealth = MaxHealth;
         currentStrategy = attackStrategyObject as IAttackStrategy;
-        
-        if (currentStrategy == null)
-        {
-            Debug.LogError($"{gameObject.name} there is not any IAttackStrategy!");
-        }
     }
 
     public void SetTarget(Transform targetT, IDamageable targetD)
@@ -55,5 +54,21 @@ public class Enemy : MonoBehaviour
         {
             currentStrategy.ExecuteAttack(transform, currentTarget);
         }
+    }
+
+    public void TakeDamage(float amount)
+    {
+        CurrentHealth -= amount;
+
+        if (CurrentHealth <= 0)
+        {
+            Die();
+        }
+    }
+
+    public void Die()
+    {
+        Debug.Log($"{gameObject.name} Killed");
+        Destroy(gameObject); 
     }
 }

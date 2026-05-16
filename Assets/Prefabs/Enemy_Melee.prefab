@@ -30,7 +30,7 @@ Transform:
   m_GameObject: {fileID: 4718474067797901452}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -2.36675, y: 1.93, z: 2.874}
+  m_LocalPosition: {x: 0, y: 1, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -69,7 +69,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 31321ba15b8f8eb4c954353edc038b1d, type: 2}
+  - {fileID: 2100000, guid: e39bf50b47548cf44b5c88b01ce51369, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -139,7 +139,7 @@ Rigidbody:
   m_ImplicitCom: 1
   m_ImplicitTensor: 1
   m_UseGravity: 1
-  m_IsKinematic: 0
+  m_IsKinematic: 1
   m_Interpolate: 0
   m_Constraints: 80
   m_CollisionDetection: 0
@@ -157,5 +157,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Enemy
   attackStrategyObject: {fileID: 11400000, guid: f155303186ccf1c42b79bcd9b5c71903, type: 2}
   moveSpeed: 3
-  attackRange: 2
+  attackRange: 5
   attackCooldown: 1.5

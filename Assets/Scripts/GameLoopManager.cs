@@ -54,7 +54,6 @@ public class GameLoopManager : MonoBehaviour
     {
         gameIsActive = false;
         spawner.StopSpawning();
-        Debug.Log("MISSION FAILED: Core Destroyed!");
     }
 
     private void HandleVictory()

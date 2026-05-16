@@ -9,8 +9,8 @@ public class Projectile : MonoBehaviour, IPoolable
     
     private Rigidbody rb;
     private float currentLifeTime;
-    
     private IObjectPool<Projectile> pool;
+    private bool isReleased; 
 
     private void Awake()
     {
@@ -25,6 +25,7 @@ public class Projectile : MonoBehaviour, IPoolable
     public void OnSpawn()
     {
         currentLifeTime = lifeTime;
+        isReleased = false; 
         
         if (rb != null)
         {
@@ -33,13 +34,29 @@ public class Projectile : MonoBehaviour, IPoolable
         }
     }
 
-    public void OnDespawn()
-    {
-    }
+    public void OnDespawn() { }
 
     private void Update()
     {
-        transform.Translate(Vector3.forward * (speed * Time.deltaTime));
+        if (isReleased) return;
+
+        float moveDistance = speed * Time.deltaTime;
+
+        RaycastHit[] hits = Physics.SphereCastAll(transform.position, 0.3f, transform.forward, moveDistance);
+
+        foreach (RaycastHit hit in hits)
+        {
+            Enemy enemy = hit.collider.GetComponent<Enemy>();
+            
+            if (enemy != null)
+            {
+                enemy.TakeDamage(damage);
+                ReleaseToPool();
+                return; 
+            }
+        }
+
+        transform.Translate(Vector3.forward * moveDistance);
 
         currentLifeTime -= Time.deltaTime;
         if (currentLifeTime <= 0)
@@ -48,19 +65,11 @@ public class Projectile : MonoBehaviour, IPoolable
         }
     }
 
-    private void OnTriggerEnter(Collider other)
-    {
-        IDamageable damageable = other.GetComponent<IDamageable>();
-        if (damageable != null)
-        {
-            damageable.TakeDamage(damage);
-        }
-
-        ReleaseToPool();
-    }
-
     private void ReleaseToPool()
     {
+        if (isReleased) return; 
+        isReleased = true;
+
         if (pool != null)
         {
             pool.Release(this);
